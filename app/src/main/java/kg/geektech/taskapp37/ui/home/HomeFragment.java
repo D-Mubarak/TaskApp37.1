@@ -46,6 +46,7 @@ public class HomeFragment extends Fragment {
                     public void onClick(DialogInterface dialog, int which) {
                         News news = adapter.getItem(pos);
                         adapter.remove(news, pos);
+
                     }
                 });
                 alertDialog.setNegativeButton("Cancel", null);
