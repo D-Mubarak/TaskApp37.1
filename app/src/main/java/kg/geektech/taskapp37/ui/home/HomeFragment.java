@@ -26,6 +26,7 @@ public class HomeFragment extends Fragment {
     private FragmentHomeBinding binding;
     private NewsAdapter adapter;
 
+
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -45,7 +46,6 @@ public class HomeFragment extends Fragment {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         News news = adapter.getItem(pos);
-
                         adapter.remove(news, pos);
                     }
                 });
