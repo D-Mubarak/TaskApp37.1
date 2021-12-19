@@ -45,6 +45,7 @@ public class HomeFragment extends Fragment {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         News news = adapter.getItem(pos);
+
                         adapter.remove(news, pos);
                     }
                 });
