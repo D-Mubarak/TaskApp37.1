@@ -1,9 +1,10 @@
-package kg.geektech.taskapp37;
+package kg.geektech.taskapp37.ui.home;
 
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
@@ -12,11 +13,12 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import kg.geektech.taskapp37.R;
 import kg.geektech.taskapp37.databinding.FragmentNewsBinding;
 import kg.geektech.taskapp37.models.News;
 
 public class NewsFragment extends Fragment {
-
+    private News news;
     private FragmentNewsBinding binding;
 
     @Override
@@ -30,6 +32,14 @@ public class NewsFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+        news = (News) requireArguments().getSerializable("news");
+        if (news != null) {
+            ((AppCompatActivity)getActivity()).getSupportActionBar().setTitle("Edit");
+            binding.editText.setText(news.getTitle());
+        }else{
+            ((AppCompatActivity)getActivity()).getSupportActionBar().setTitle("Add");
+
+        }
         binding.btnSave.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -42,10 +52,17 @@ public class NewsFragment extends Fragment {
 
     private void save() {
         String text = binding.editText.getText().toString().trim();
-        News news = new News(text, System.currentTimeMillis());
         Bundle bundle = new Bundle();
-        bundle.putSerializable("news", news);
-        getParentFragmentManager().setFragmentResult("rk_news", bundle);
+        if (news == null) {
+            news = new News(text, System.currentTimeMillis());
+            bundle.putSerializable("news", news);
+            getParentFragmentManager().setFragmentResult("rk_news_add", bundle);
+        } else {
+            news.setTitle(text);
+            bundle.putSerializable("news", news);
+            getParentFragmentManager().setFragmentResult("rk_news_update", bundle);
+        }
+
         close();
     }
 

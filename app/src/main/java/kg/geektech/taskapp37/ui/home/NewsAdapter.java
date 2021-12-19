@@ -12,8 +12,10 @@ import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 
+import kg.geektech.taskapp37.R;
 import kg.geektech.taskapp37.databinding.FragmentNewsBinding;
 import kg.geektech.taskapp37.databinding.ItemNewsBinding;
 import kg.geektech.taskapp37.interfaces.OnItemClickListener;
@@ -27,7 +29,7 @@ public class NewsAdapter extends RecyclerView.Adapter<NewsAdapter.ViewHolder> {
 
     public NewsAdapter() {
         list = new ArrayList<>();
-        list.add(new News("Muba", System.currentTimeMillis()));
+        list.add(new News("Добро пожаловать в 'Заметки программиста'", System.currentTimeMillis()));
     }
 
     @NonNull
@@ -41,9 +43,7 @@ public class NewsAdapter extends RecyclerView.Adapter<NewsAdapter.ViewHolder> {
         //holder.bind(list.get(position));
         holder.bind(list.get(position), onItemClickListener);
         if (position % 2 == 0) {
-            binding.textTitle.setBackgroundColor(Color.GRAY);
-        } else {
-            binding.textTitle.setBackgroundColor(Color.WHITE);
+            holder.itemView.setBackgroundColor(Color.DKGRAY);
         }
         holder.bind(list.get(position), onItemClickListener);
     }
@@ -55,27 +55,38 @@ public class NewsAdapter extends RecyclerView.Adapter<NewsAdapter.ViewHolder> {
 
     public void addItem(News news) {
         list.add(0, news);
-        notifyItemChanged(0);
+        notifyItemInserted(0);
 
     }
-    public void removeList(int position){
+
+    public void updateItem(News news) {
+        int index = list.indexOf(news);
+        list.set(index, news);
+        notifyItemChanged(index);
+    }
+
+    public void removeList(int position) {
         list.remove(position);
-    }
-
-    public void setOnItemClickListener(OnItemClickListener onItemCtlickListener) {
-        this.onItemClickListener = onItemClickListener;
     }
 
     public News getItem(int pos) {
         return list.get(pos);
     }
 
-    public class ViewHolder extends RecyclerView.ViewHolder {
+    public void remove(News news, int pos) {
+        this.list.remove(news);
+        notifyItemRemoved(pos);
+    }
 
-        public void remove( int pos){
-            list.remove(pos);
-            notifyItemRemoved(pos);
-        }
+    public void setOnItemClickListener(OnItemClickListener onItemClickListener) {
+        this.onItemClickListener = onItemClickListener;
+    }
+
+    public OnItemClickListener getOnItemClickListener() {
+        return onItemClickListener;
+    }
+
+    public class ViewHolder extends RecyclerView.ViewHolder {
 
         public ViewHolder(@NonNull ItemNewsBinding itemView) {
             super(itemView.getRoot());
@@ -83,34 +94,20 @@ public class NewsAdapter extends RecyclerView.Adapter<NewsAdapter.ViewHolder> {
             itemView.getRoot().setOnClickListener(view -> {
                 onItemClickListener.onClick(getAdapterPosition());
             });
-            binding.getRoot().setOnLongClickListener(view -> {
-                AlertDialog.Builder alertDialog = new AlertDialog.Builder(binding.getRoot().getContext());
-                String yes = "Yes";
-                String cancel = "Cancel";
-                alertDialog.setMessage("Do you want to delete?");
-                alertDialog.setPositiveButton(yes, new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialogInterface, int i) {
-                        list.remove(getAdapterPosition());
-                        notifyItemRemoved(i);
-
-                    }
-
-                });
-                alertDialog.setNegativeButton(cancel, new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        dialog.dismiss();
-                    }
-                });
-                alertDialog.show();
-                return true;
+            binding.getRoot().setOnLongClickListener(new View.OnLongClickListener() {
+                @Override
+                public boolean onLongClick(View v) {
+                    onItemClickListener.onLongClick(getAdapterPosition());
+                    return true;
+                }
             });
         }
 
-        public void bind(News news, OnItemClickListener onItemClickListener ) {
+        public void bind(News news, OnItemClickListener onItemClickListener) {
+            SimpleDateFormat sdf = new SimpleDateFormat("HH:mm");
+            String a = sdf.format(news.getCreatedAt());
             binding.textTitle.setText(news.getTitle());
-
+            binding.time.setText(a);
         }
     }
 

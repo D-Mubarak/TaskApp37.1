@@ -1,8 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:background="@color/yellow_yandex"
     android:gravity="center"
     android:orientation="vertical"
     android:padding="16dp">
@@ -19,6 +20,7 @@
         android:layout_marginTop="64dp"
         android:layout_marginBottom="32dp"
         android:text="Title"
+        android:textColor="@color/white"
         android:textSize="28dp"
         android:textStyle="bold" />
 
@@ -27,13 +29,17 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:gravity="center"
-        android:text="Description" />
+        android:text="Description"
+        android:textColor="@color/white" />
 
     <Button
         android:id="@+id/btn_start"
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="32dp"
-        android:text="Let's start it!"/>
+        android:background="@drawable/circle_button_of_board"
+        android:text="go"
+        android:textAlignment="center" />
+
 
 </LinearLayout>

@@ -5,19 +5,19 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:padding="16dp"
-    tools:context=".BoardFragment">
+    android:background="@color/yellow_yandex"
+    tools:context=".ui.board.BoardFragment">
 
     <Button
         android:id="@+id/skip"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:padding="6dp"
         android:background="@null"
-        android:paddingEnd="16dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        android:text="skip >>"
-        android:textAlignment="textEnd"
+        android:text="skip"
+        android:textAlignment="center"
+        android:textColor="@color/white"
         android:textSize="18sp"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
     <androidx.viewpager2.widget.ViewPager2
@@ -30,12 +30,11 @@
         android:id="@+id/dotsInd"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        app:dotsColor="@color/white"
+        app:dotsSize="6dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:dotsSize="6dp"
-        app:selectedDotColor="@color/black"
-        app:dotsColor="@color/black"/>
-
+        app:selectedDotColor="@color/black" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

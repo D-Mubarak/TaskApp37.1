@@ -13,7 +13,7 @@ public class Prefs {
     }
 
     public void saveBoardState() {
-        sharedPreferences.edit().putBoolean("key1", true).apply();
+        sharedPreferences.edit().putBoolean("isShown", true).apply();
     }
 
     public boolean isBoardShown() {

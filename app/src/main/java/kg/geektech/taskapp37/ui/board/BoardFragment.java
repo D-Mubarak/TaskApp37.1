@@ -1,5 +1,6 @@
-package kg.geektech.taskapp37;
+package kg.geektech.taskapp37.ui.board;
 
+import android.content.Context;
 import android.os.Bundle;
 
 import androidx.activity.OnBackPressedCallback;
@@ -14,12 +15,15 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import kg.geektech.taskapp37.Prefs;
+import kg.geektech.taskapp37.R;
 import kg.geektech.taskapp37.databinding.FragmentBoardBinding;
 import kg.geektech.taskapp37.interfaces.OnStartClickListener;
 
 public class BoardFragment extends Fragment {
 
     private FragmentBoardBinding binding;
+    private Context context;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,

@@ -8,23 +8,27 @@
     tools:context=".ui.profile.ProfileFragment">
 
     <ImageView
+        android:layout_marginTop="8dp"
         android:id="@+id/photo"
         android:layout_width="150dp"
         android:layout_height="150dp"
         android:src="@drawable/ic_person"
-        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
     <EditText
         android:id="@+id/usernameET"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_width="wrap_content"
+        android:layout_height="34dp"
+        android:background="@null"
         android:hint="Your Username: "
-        android:padding="16dp"
         android:textAlignment="center"
-        app:layout_constraintTop_toBottomOf="@+id/photo"
-        android:background="@color/gray"/>
+        app:layout_constraintBottom_toBottomOf="@+id/photo"
+        android:layout_marginBottom="64dp"
+        android:textColor="@color/yellow_yandex"
+        android:textColorHint="@color/yellow_yandex"
+        app:layout_constraintStart_toEndOf="@+id/photo"
+        app:layout_constraintTop_toTopOf="@+id/photo" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

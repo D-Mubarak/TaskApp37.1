@@ -1,14 +1,13 @@
-package kg.geektech.taskapp37;
+package kg.geektech.taskapp37.ui.board;
 
-import android.net.Uri;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import kg.geektech.taskapp37.R;
 import kg.geektech.taskapp37.databinding.ItemBoardBinding;
 import kg.geektech.taskapp37.interfaces.OnStartClickListener;
 

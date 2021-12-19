@@ -38,18 +38,20 @@ public class HomeFragment extends Fragment {
             }
 
             @Override
-            public void onLongClick(int pos) {
+            public boolean onLongClick(int pos) {
                 AlertDialog.Builder alertDialog = new AlertDialog.Builder(getContext());
                 alertDialog.setMessage("What you want to do?");
-                alertDialog.setPositiveButton("", new DialogInterface.OnClickListener() {
+                alertDialog.setPositiveButton("Remove", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        adapter.removeList(pos);
+                        News news = adapter.getItem(pos);
+                        adapter.remove(news, pos);
                     }
                 });
+                alertDialog.setNegativeButton("Cancel", null);
+                alertDialog.show();
+                return true;
             }
-
-
         });
     }
 
@@ -59,28 +61,42 @@ public class HomeFragment extends Fragment {
         binding = FragmentHomeBinding.inflate(inflater, container, false);
         View root = binding.getRoot();
 
-        binding.fab.setOnClickListener(view -> {
-            openFragment();
-        });
-        getParentFragmentManager().setFragmentResultListener("rk_news", getViewLifecycleOwner(), new FragmentResultListener() {
-            @Override
-            public void onFragmentResult(@NonNull String requestKey, @NonNull Bundle result) {
-                News news = (News) result.getSerializable("news");
-                Log.e("Home", "text= " + news.getTitle());
-                adapter.addItem(news);
-            }
-        });
         return root;
     }
 
-    private void openFragment() {
+    private void openFragment(News news) {
         NavController navController = Navigation.findNavController(requireActivity(), R.id.nav_host_fragment_activity_main);
-        navController.navigate(R.id.newsFragment);
+        Bundle bundle = new Bundle();
+        bundle.putSerializable("news", news);
+        navController.navigate(R.id.newsFragment, bundle);
     }
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+        binding.fab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                openFragment(null);
+            }
+        });
+        getParentFragmentManager().setFragmentResultListener("rk_news_add", getViewLifecycleOwner(), new FragmentResultListener() {
+            @Override
+            public void onFragmentResult(@NonNull String requestKey, @NonNull Bundle result) {
+                News news = (News) result.getSerializable("news");
+                Log.e("Home", "text = " + news.getTitle());
+                adapter.addItem(news);
+            }
+        });
+        getParentFragmentManager().setFragmentResultListener("rk_news_update", getViewLifecycleOwner(), new FragmentResultListener() {
+            @Override
+            public void onFragmentResult(@NonNull String requestKey, @NonNull Bundle result) {
+                News news = (News) result.getSerializable("news");
+                Log.e("Home", "text = " + news.getTitle());
+                adapter.updateItem(news);
+
+            }
+        });
         initList();
     }
 
