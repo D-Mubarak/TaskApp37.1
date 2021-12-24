@@ -4,6 +4,9 @@ import android.content.DialogInterface;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
@@ -16,10 +19,14 @@ import androidx.fragment.app.FragmentResultListener;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 
+import java.util.List;
+
+import kg.geektech.taskapp37.App;
 import kg.geektech.taskapp37.R;
 import kg.geektech.taskapp37.databinding.FragmentHomeBinding;
 import kg.geektech.taskapp37.interfaces.OnItemClickListener;
 import kg.geektech.taskapp37.models.News;
+import kg.geektech.taskapp37.room.AppDatabase;
 
 public class HomeFragment extends Fragment {
 
@@ -30,7 +37,10 @@ public class HomeFragment extends Fragment {
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setHasOptionsMenu(true);
         adapter = new NewsAdapter();
+        List<News> list = App.getInstance().getDatabase().newsDao().getAll();
+        adapter.addItems(list);
         adapter.setOnItemClickListener(new OnItemClickListener() {
             @Override
             public void onClick(int pos) {
@@ -46,10 +56,18 @@ public class HomeFragment extends Fragment {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         News news = adapter.getItem(pos);
+                        App.getInstance().getDatabase().newsDao().delete(news);
                         adapter.remove(news, pos);
                     }
                 });
-                alertDialog.setNegativeButton("Cancel", null);
+                alertDialog.setNeutralButton("Cancel", null);
+                alertDialog.setNegativeButton("Update", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        News news = adapter.getItem(pos);
+                        openFragment(news);
+                    }
+                });
                 alertDialog.show();
                 return true;
             }
@@ -75,6 +93,7 @@ public class HomeFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+
         binding.fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -87,6 +106,7 @@ public class HomeFragment extends Fragment {
                 News news = (News) result.getSerializable("news");
                 Log.e("Home", "text = " + news.getTitle());
                 adapter.addItem(news);
+
             }
         });
         getParentFragmentManager().setFragmentResultListener("rk_news_update", getViewLifecycleOwner(), new FragmentResultListener() {
@@ -110,5 +130,23 @@ public class HomeFragment extends Fragment {
         super.onDestroyView();
         binding = null;
     }
+    @Override
+    public void onCreateOptionsMenu(@NonNull Menu menu, @NonNull MenuInflater inflater) {
+        super.onCreateOptionsMenu(menu, inflater);
+        inflater.inflate(R.menu.home, menu);
+    }
 
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        if (item.getItemId() == R.id.actionSort){
+            getSortedList();
+        }
+        return super.onOptionsItemSelected(item);
+
+    }
+
+    private void getSortedList() {
+        List<News> list = App.getInstance().getDatabase().newsDao().getAllSortedTitle();
+        adapter.addItems(list);
+    }
 }

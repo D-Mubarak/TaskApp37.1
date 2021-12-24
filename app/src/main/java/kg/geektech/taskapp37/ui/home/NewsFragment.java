@@ -13,6 +13,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import kg.geektech.taskapp37.App;
 import kg.geektech.taskapp37.R;
 import kg.geektech.taskapp37.databinding.FragmentNewsBinding;
 import kg.geektech.taskapp37.models.News;
@@ -57,10 +58,12 @@ public class NewsFragment extends Fragment {
             news = new News(text, System.currentTimeMillis());
             bundle.putSerializable("news", news);
             getParentFragmentManager().setFragmentResult("rk_news_add", bundle);
+            App.getInstance().getDatabase().newsDao().insert(news);
         } else {
             news.setTitle(text);
             bundle.putSerializable("news", news);
             getParentFragmentManager().setFragmentResult("rk_news_update", bundle);
+            App.getInstance().getDatabase().newsDao().update(news);
         }
 
         close();

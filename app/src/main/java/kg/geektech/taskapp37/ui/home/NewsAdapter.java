@@ -1,19 +1,23 @@
-package kg.geektech.taskapp37.ui.home;
+    package kg.geektech.taskapp37.ui.home;
 
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.ContextWrapper;
 import android.content.DialogInterface;
 import android.graphics.Color;
+import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
+import androidx.navigation.NavController;
+import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.RecyclerView;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.List;
 
 import kg.geektech.taskapp37.R;
 import kg.geektech.taskapp37.databinding.FragmentNewsBinding;
@@ -25,11 +29,9 @@ public class NewsAdapter extends RecyclerView.Adapter<NewsAdapter.ViewHolder> {
 
     private ArrayList<News> list;
     private OnItemClickListener onItemClickListener;
-    private ItemNewsBinding binding;
 
     public NewsAdapter() {
         list = new ArrayList<>();
-        list.add(new News("Добро пожаловать в 'Заметки программиста'", System.currentTimeMillis()));
     }
 
     @NonNull
@@ -65,14 +67,15 @@ public class NewsAdapter extends RecyclerView.Adapter<NewsAdapter.ViewHolder> {
         notifyItemChanged(index);
     }
 
-    public void removeList(int position) {
-        list.remove(position);
-    }
-
     public News getItem(int pos) {
         return list.get(pos);
     }
 
+    public void addItems(List<News> list) {
+        this.list.clear();
+        this.list.addAll(list);
+        notifyDataSetChanged();
+    }
     public void remove(News news, int pos) {
         this.list.remove(news);
         notifyItemRemoved(pos);
@@ -86,7 +89,14 @@ public class NewsAdapter extends RecyclerView.Adapter<NewsAdapter.ViewHolder> {
         return onItemClickListener;
     }
 
+    public void editing(News news, int position) {
+
+    }
+
+
     public class ViewHolder extends RecyclerView.ViewHolder {
+
+        private ItemNewsBinding binding;
 
         public ViewHolder(@NonNull ItemNewsBinding itemView) {
             super(itemView.getRoot());
@@ -104,7 +114,7 @@ public class NewsAdapter extends RecyclerView.Adapter<NewsAdapter.ViewHolder> {
         }
 
         public void bind(News news, OnItemClickListener onItemClickListener) {
-            SimpleDateFormat sdf = new SimpleDateFormat("HH:mm");
+            SimpleDateFormat sdf = new SimpleDateFormat("MM.dd"+" - " +"HH:mm:ss");
             String a = sdf.format(news.getCreatedAt());
             binding.textTitle.setText(news.getTitle());
             binding.time.setText(a);

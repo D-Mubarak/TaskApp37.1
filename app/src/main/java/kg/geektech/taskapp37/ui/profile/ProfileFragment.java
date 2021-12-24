@@ -51,8 +51,6 @@ public class ProfileFragment extends Fragment {
         Prefs prefs = new Prefs(requireContext());
         putPhoto(prefs);
         savingInfo(prefs);
-
-
         if (!prefs.getImage().equals("")) {
             Glide.with(binding.photo).load(prefs.getImage()).circleCrop().into(binding.photo);
             proverka = true;
